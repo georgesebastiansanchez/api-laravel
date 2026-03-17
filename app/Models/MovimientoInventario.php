@@ -9,7 +9,7 @@ class MovimientoInventario extends Model
 {
     use HasFactory;
 
-    protected $table = 'MovimientosInventario';
+    protected $table = 'movimientosInventario';
     protected $primaryKey = 'IdMovimiento';
 
     protected $fillable = [

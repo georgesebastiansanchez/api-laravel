@@ -120,9 +120,10 @@ Route::middleware('jwt.auth')->group(function () {
     Route::middleware('check.admin')->group(function () {
         
         // PERMISOS
-        Route::get('/permisos/{numeroDocumento}', [PermisoController::class, 'getPermisosUsuario']);
-        Route::post('/permisos/asignar', [PermisoController::class, 'asignarPermisos']);
-
+        Route::get('/permisos', [PermisoController::class, 'index']); // ← AGREGAR ESTA LÍNEA
+    Route::get('/permisos/{numeroDocumento}', [PermisoController::class, 'getPermisosUsuario']);
+    Route::post('/permisos/asignar', [PermisoController::class, 'asignarPermisos']);
+    Route::delete('/permisos/revocar/{numeroDocumento}/{idModulo}', [PermisoController::class, 'revocarPermiso']);
         // SOLICITUDES
         Route::get('/solicitudes/pendientes', [SolicitudAccesoController::class, 'solicitudesPendientes']);
         Route::get('/solicitudes/todas', [SolicitudAccesoController::class, 'todasLasSolicitudes']);
@@ -149,7 +150,7 @@ Route::middleware('jwt.auth')->group(function () {
             Route::get('movimientos', [InventarioController::class, 'getMovimientos']);
         });
 
-        // NOTA: Se eliminó el bloque de 'reportes' duplicado de aquí.
+      
         
         // Gestión de productos
         Route::prefix('products')->group(function () {

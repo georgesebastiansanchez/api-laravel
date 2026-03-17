@@ -88,7 +88,7 @@ class SolicitudAccesoController extends Controller
         ]);
     }
 
-    // Admin: Obtener todas las solicitudes pendientes
+    // ✅ CORREGIDO: Admin - Obtener todas las solicitudes pendientes
     public function solicitudesPendientes(Request $request)
     {
         $admin = $request->user();
@@ -103,7 +103,34 @@ class SolicitudAccesoController extends Controller
         $solicitudes = SolicitudAcceso::with(['usuario', 'modulo'])
             ->where('Estado', 'pendiente')
             ->orderBy('FechaSolicitud', 'asc')
-            ->get();
+            ->get()
+            ->map(function ($solicitud) {
+                return [
+                    'IdSolicitud' => $solicitud->IdSolicitud,
+                    'NumeroDocumento' => $solicitud->NumeroDocumento,
+                    'IdModulo' => $solicitud->IdModulo,
+                    'Justificacion' => $solicitud->Justificacion,
+                    'Estado' => $solicitud->Estado,
+                    'FechaSolicitud' => $solicitud->FechaSolicitud,
+                    'FechaRespuesta' => $solicitud->FechaRespuesta,
+                    'RespondidoPor' => $solicitud->RespondidoPor,
+                    'ComentarioAdmin' => $solicitud->ComentarioAdmin,
+                    'MotivoRechazo' => $solicitud->ComentarioAdmin,
+                    
+                    // ✅ AGREGAR DATOS DEL USUARIO
+                    'NombreUsuario' => $solicitud->usuario 
+                        ? ($solicitud->usuario->Nombre ?? $solicitud->usuario->Email ?? 'Usuario desconocido')
+                        : 'Usuario desconocido',
+                    'EmailUsuario' => $solicitud->usuario 
+                        ? $solicitud->usuario->Email 
+                        : '',
+                    
+                    // ✅ AGREGAR DATOS DEL MÓDULO
+                    'NombreModulo' => $solicitud->modulo 
+                        ? $solicitud->modulo->NombreModulo 
+                        : 'Módulo desconocido',
+                ];
+            });
 
         return response()->json([
             'success' => true,
@@ -112,7 +139,7 @@ class SolicitudAccesoController extends Controller
         ]);
     }
 
-    // Admin: Obtener todas las solicitudes (historial completo)
+    // ✅ CORREGIDO: Admin - Obtener todas las solicitudes (historial completo)
     public function todasLasSolicitudes(Request $request)
     {
         $admin = $request->user();
@@ -126,7 +153,35 @@ class SolicitudAccesoController extends Controller
 
         $solicitudes = SolicitudAcceso::with(['usuario', 'modulo'])
             ->orderBy('FechaSolicitud', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($solicitud) {
+                // Transformar los datos para incluir nombre y email directamente
+                return [
+                    'IdSolicitud' => $solicitud->IdSolicitud,
+                    'NumeroDocumento' => $solicitud->NumeroDocumento,
+                    'IdModulo' => $solicitud->IdModulo,
+                    'Justificacion' => $solicitud->Justificacion,
+                    'Estado' => $solicitud->Estado,
+                    'FechaSolicitud' => $solicitud->FechaSolicitud,
+                    'FechaRespuesta' => $solicitud->FechaRespuesta,
+                    'RespondidoPor' => $solicitud->RespondidoPor,
+                    'ComentarioAdmin' => $solicitud->ComentarioAdmin,
+                    'MotivoRechazo' => $solicitud->ComentarioAdmin, // Alias para compatibilidad
+                    
+                    // ✅ AGREGAR DATOS DEL USUARIO
+                    'NombreUsuario' => $solicitud->usuario 
+                        ? ($solicitud->usuario->Nombre ?? $solicitud->usuario->Email ?? 'Usuario desconocido')
+                        : 'Usuario desconocido',
+                    'EmailUsuario' => $solicitud->usuario 
+                        ? $solicitud->usuario->Email 
+                        : '',
+                    
+                    // ✅ AGREGAR DATOS DEL MÓDULO
+                    'NombreModulo' => $solicitud->modulo 
+                        ? $solicitud->modulo->NombreModulo 
+                        : 'Módulo desconocido',
+                ];
+            });
 
         return response()->json([
             'success' => true,
@@ -216,4 +271,5 @@ class SolicitudAccesoController extends Controller
                 'message' => 'Error al responder solicitud: ' . $e->getMessage()
             ], 500);
         }
-    }}
+    }
+}

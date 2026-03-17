@@ -13,7 +13,7 @@ class TipoDocumento extends Model
 {
     use HasFactory;
 
-    protected $table = 'TipoDocumento';
+    protected $table = 'tipodocumento';
     protected $primaryKey = 'IdTipoDocumento';
 
     protected $fillable = [

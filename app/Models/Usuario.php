@@ -11,7 +11,7 @@ class Usuario extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'Usuarios';
+    protected $table = 'usuarios';
     protected $primaryKey = 'NumeroDocumento';
     public $incrementing = false;
     protected $keyType = 'integer';
