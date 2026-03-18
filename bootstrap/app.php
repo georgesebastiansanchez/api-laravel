@@ -12,20 +12,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // ✅ CORS debe ser el PRIMER middleware
-        $middleware->use([
-            \App\Http\Middleware\CorsMiddleware::class,
-        ]);
-        
-        // También en API
-        $middleware->api(prepend: [
-            \App\Http\Middleware\CorsMiddleware::class,
-        ]);
-        
         // ✅ REGISTRAR ALIAS DE MIDDLEWARES
+        // Aquí mantenemos tus validaciones de Admin y Auth
         $middleware->alias([
             'check.admin' => \App\Http\Middleware\IsAdmin::class,
             'user.auth' => \App\Http\Middleware\IsUserAuth::class,
+        ]);
+
+        // ✅ EXCEPCIÓN DE CSRF PARA LA API
+        // Esto es vital para que las peticiones POST desde React no reboten
+        $middleware->validateCsrfTokens(except: [
+            'api/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
