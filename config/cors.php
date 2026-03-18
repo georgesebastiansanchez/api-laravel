@@ -5,11 +5,9 @@ return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'], 
-
-    'allowed_origins' => ["*"], 
-
-    // Aquí es donde garantizamos que la IP 127.0.0.1 en cualquier puerto sea permitida.
+    'allowed_origins' => ['*'],
+    'allowed_origins_patterns' => [],
+    
     'allowed_origins_patterns' => [
         'http://localhost:\d+', 
         'http://127.0.0.1:\d+', 
