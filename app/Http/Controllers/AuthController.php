@@ -32,7 +32,7 @@ class AuthController extends Controller
             'Telefono' => 'required|string|max:15',
             'Edad' => 'required|integer|min:0|max:120',
             'Role' => 'sometimes|in:user,admin',
-            'IdTipoDocumento' => 'required|integer|exists:TipoDocumento,IdTipoDocumento'
+            'IdTipoDocumento' => 'required|integer|exists:tipodocumento,IdTipoDocumento'
         ]);
 
         if ($validator->fails()) {
