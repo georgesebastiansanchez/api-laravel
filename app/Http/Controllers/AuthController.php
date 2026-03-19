@@ -60,7 +60,7 @@ class AuthController extends Controller
                 'IdTipoDocumento' => $request->IdTipoDocumento
             ]);
 
-            $usuario->load('tipoDocumento');
+            $usuario->load('tipodocumento');
             $usuario->makeHidden(['Contrasena']);
 
             return response()->json([
