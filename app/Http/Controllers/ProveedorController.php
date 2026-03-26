@@ -69,7 +69,7 @@ class ProveedorController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'NombreProveedor' => 'required|string|max:100|unique:Proveedores,NombreProveedor',
+            'NombreProveedor' => 'required|string|max:100|unique:proveedores,NombreProveedor',
             'Contacto' => 'nullable|string|max:100',
             'Telefono' => 'nullable|string|max:20',
             'Email' => 'nullable|email|max:100',
@@ -166,7 +166,7 @@ class ProveedorController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'NombreProveedor' => 'sometimes|string|max:100|unique:Proveedores,NombreProveedor,' . $id . ',IdProveedor',
+                'NombreProveedor' => 'sometimes|string|max:100|unique:proveedores,NombreProveedor,' . $id . ',IdProveedor',
                 'Contacto' => 'nullable|string|max:100',
                 'Telefono' => 'nullable|string|max:20',
                 'Email' => 'nullable|email|max:100',
